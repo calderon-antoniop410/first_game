@@ -9,17 +9,21 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private PlayerAudio playerAudio;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Reference the PlayerAudio component on this GameObject
+        playerAudio = GetComponent<PlayerAudio>();
     }
 
     private void Update()
     {
-        // 1. Check for Spacebar OR Left Click
+        // Check for Spacebar OR Left Click
         bool spacePressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
         bool leftClickPressed = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
 
@@ -29,7 +33,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // Works if you have an 'Attack' action bound in your Player Input component
     public void OnAttack(InputValue value)
     {
         if (value.isPressed)
@@ -43,6 +46,12 @@ public class PlayerMovement : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger("Attack");
+        }
+
+        // Call the separate audio script
+        if (playerAudio != null)
+        {
+            playerAudio.PlaySwordSwing();
         }
     }
 
