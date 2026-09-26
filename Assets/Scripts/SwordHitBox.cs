@@ -1,14 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordHitbox : MonoBehaviour
 {
+    [SerializeField] private int damageAmount = 10;
+
+    // Track targets hit during this specific swing
+    private HashSet<Collider2D> hitEnemies = new HashSet<Collider2D>();
+
+    private void OnEnable()
+    {
+        // Clear history whenever the hitbox turns ON
+        hitEnemies.Clear();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the collided object has a specific tag (e.g., "Enemy" or "Breakable")
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") && !hitEnemies.Contains(other))
         {
-            Debug.Log("Hit enemy: " + other.name);
-            // Add damage or destruction logic here later
+            SlimeEnemy slime = other.GetComponent<SlimeEnemy>();
+            if (slime != null)
+            {
+                slime.TakeDamage(damageAmount);
+                hitEnemies.Add(other);
+            }
         }
     }
 }

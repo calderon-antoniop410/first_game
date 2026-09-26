@@ -10,6 +10,14 @@ public class PlayerHealth : MonoBehaviour
     [Header("UI Reference")]
     [SerializeField] private Slider healthSlider;
 
+    private Animator animator;
+
+    private void Awake()
+    {
+        // Grab the Animator attached to this GameObject
+        animator = GetComponent<Animator>();
+    }
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -27,6 +35,12 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         UpdateUI();
+
+        // Trigger the 4-frame Hurt animation in the Animator
+        if (animator != null)
+        {
+            animator.SetTrigger("Hurt");
+        }
 
         if (currentHealth <= 0)
         {
