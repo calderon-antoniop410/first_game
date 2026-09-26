@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private GameObject swordHitbox;
-    [SerializeField] private float attackCooldown = 0.3f;
+    [SerializeField] private float attackCooldown = 0.5f;
     [SerializeField] private float defaultXOffset = 0.1f;
 
     private bool isAttacking = false;

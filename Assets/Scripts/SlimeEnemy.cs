@@ -1,26 +1,34 @@
-using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SlimeEnemy : MonoBehaviour
 {
     [Header("Enemy Stats")]
-    [SerializeField] private int maxHealth = 30; // Slime's total health
+    [SerializeField] private int maxHealth = 30;
     private int currentHealth;
 
     [Header("Attack Settings")]
-    [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private int attackDamage = 10;
-    [SerializeField] private float attackRange = 1.0f;
+    [SerializeField] private float attackRange = 1.2f;
     [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float repathInterval = 0.2f;
 
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private Transform playerTransform;
-    private Rigidbody2D rb;
+    private NavMeshAgent agent;
     private float nextAttackTime = 0f;
+    private float nextRepathTime = 0f;
 
     private void Start()
     {
-        currentHealth = maxHealth; // Set health at start
-        rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+        agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
 
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
@@ -37,7 +45,7 @@ public class SlimeEnemy : MonoBehaviour
 
         if (distance <= attackRange)
         {
-            rb.linearVelocity = Vector2.zero;
+            agent.isStopped = true;
 
             if (Time.time >= nextAttackTime)
             {
@@ -47,26 +55,45 @@ public class SlimeEnemy : MonoBehaviour
         }
         else
         {
-            Vector2 direction = (playerTransform.position - transform.position).normalized;
-            rb.linearVelocity = direction * moveSpeed;
+            agent.isStopped = false;
+
+            if (Time.time >= nextRepathTime)
+            {
+                agent.SetDestination(playerTransform.position);
+                nextRepathTime = Time.time + repathInterval;
+            }
         }
+
+        FlipSprite(agent.velocity.x);
+
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        }
+    }
+
+    private void FlipSprite(float directionX)
+    {
+        if (Mathf.Abs(directionX) < 0.1f) return;
+        spriteRenderer.flipX = directionX > 0;
     }
 
     private void AttackPlayer()
     {
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         PlayerHealth playerHealth = playerTransform.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(attackDamage);
-            UnityEngine.Debug.Log("Slime attacked the player for " + attackDamage + " damage!");
         }
     }
-
-    // Call this function when the player hits the slime!
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        UnityEngine.Debug.Log("Slime took " + damage + " damage! Current HP: " + currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -76,7 +103,6 @@ public class SlimeEnemy : MonoBehaviour
 
     private void Die()
     {
-        UnityEngine.Debug.Log("Slime defeated!");
-        Destroy(gameObject); // Removes the slime from the game
+        Destroy(gameObject);
     }
 }
