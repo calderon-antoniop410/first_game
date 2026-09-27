@@ -8,15 +8,18 @@ public class SlimeEnemy : MonoBehaviour
     private int currentHealth;
 
     [Header("Attack Settings")]
-    [SerializeField] private int attackDamage = 10;
-    [SerializeField] private float attackRange = 1.2f;
-    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float deathAnimationLength = 0.6f;
+    private bool isDead = false;
+    [SerializeField] private int attackDamage;
+    [SerializeField] private float attackRange;
+    [SerializeField] private float attackCooldown;
     [SerializeField] private float repathInterval = 0.2f;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Transform playerTransform;
     private NavMeshAgent agent;
+    private SlimeSpawner spawner;
     private float nextAttackTime = 0f;
     private float nextRepathTime = 0f;
 
@@ -39,7 +42,8 @@ public class SlimeEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (playerTransform == null) return;
+    
+        if (playerTransform == null || isDead) return;
 
         float distance = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -93,6 +97,7 @@ public class SlimeEnemy : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
         currentHealth -= damage;
 
         if (currentHealth <= 0)
@@ -100,9 +105,27 @@ public class SlimeEnemy : MonoBehaviour
             Die();
         }
     }
+    public void SetSpawner(SlimeSpawner spawnerRef)
+    {
+        spawner = spawnerRef;
+    }
 
     private void Die()
     {
-        Destroy(gameObject);
+        isDead = true;
+        agent.isStopped = true;
+        agent.enabled = false;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
+
+        if (spawner != null)
+        {
+            spawner.OnSlimeDied();
+        }
+
+        Destroy(gameObject, deathAnimationLength);
     }
 }

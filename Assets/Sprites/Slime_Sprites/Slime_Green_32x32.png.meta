@@ -605,28 +605,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slime_Green_32x32_20
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 32
-        width: 87
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c67d260df3f96cd40800000000000000
-      internalID: 5604341882737055596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Slime_Green_32x32_21
       rect:
         serializedVersion: 2
@@ -648,6 +626,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: SlimeGreenFinalDeathSprite
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 31
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 22, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27759fa2e227afd43af0339532c12994
+      internalID: 1774986856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -664,6 +664,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      SlimeGreenFinalDeathSprite: 5604341882737055596
       Slime_Green_32x32_0: 697912595022439291
       Slime_Green_32x32_1: 1373515724825019951
       Slime_Green_32x32_10: -3391612770619169389
@@ -677,7 +678,6 @@ TextureImporter:
       Slime_Green_32x32_18: -8460859611703158496
       Slime_Green_32x32_19: -6887140107103093738
       Slime_Green_32x32_2: 4890140311355056520
-      Slime_Green_32x32_20: 5604341882737055596
       Slime_Green_32x32_21: -6350483400716153849
       Slime_Green_32x32_3: -6172905671097963482
       Slime_Green_32x32_4: -7953544906441320330

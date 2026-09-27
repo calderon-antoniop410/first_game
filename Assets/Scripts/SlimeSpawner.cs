@@ -74,6 +74,13 @@ public class SlimeSpawner : MonoBehaviour
 
         // 3. Instantiate the slime at the calculated off-screen position
         GameObject newSlime = Instantiate(slimePrefab, spawnPosition, Quaternion.identity);
+
+        SlimeEnemy slimeEnemy = newSlime.GetComponent<SlimeEnemy>();
+        if (slimeEnemy != null)
+        {
+            slimeEnemy.SetSpawner(this);
+        }
+        
         currentSlimeCount++;
     }
 

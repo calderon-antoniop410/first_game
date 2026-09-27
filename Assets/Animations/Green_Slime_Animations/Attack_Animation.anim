@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Moving_Green_Slime
+  m_Name: Attack_Animation
   serializedVersion: 8
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,19 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 697912595022439291, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+      value: {fileID: 314754906290577054, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - time: 0.11111111
+      value: {fileID: -7953544906441320330, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - time: 0.22222222
+      value: {fileID: -6172905671097963482, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - time: 0.33333334
+      value: {fileID: 1373515724825019951, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
     flags: 2
-  m_SampleRate: 60
+  m_SampleRate: 45
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -45,13 +51,16 @@ AnimationClip:
       isSerializeReferenceCurve: 0
       metaData: 0
     pptrCurveMapping:
-    - {fileID: 697912595022439291, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - {fileID: 314754906290577054, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - {fileID: -7953544906441320330, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - {fileID: -6172905671097963482, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
+    - {fileID: 1373515724825019951, guid: 04b972a16ae460449a6b54e3e0359db8, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 0.35555556
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

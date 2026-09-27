@@ -372,9 +372,9 @@ PolygonCollider2D:
       - {x: -0.089999996, y: 0.125}
       - {x: -0.09722157, y: 0.08553472}
       - {x: -0.13823159, y: 0.055}
-      - {x: -0.14, y: -0.21499999}
-      - {x: 0.11, y: -0.21499999}
-      - {x: 0.09993762, y: -0.20975728}
+      - {x: -0.12820072, y: -0.24415015}
+      - {x: 0.11, y: -0.24377671}
+      - {x: 0.10835838, y: -0.22997735}
       - {x: 0.08, y: -0.074999996}
       - {x: 0.089999996, y: -0.074999996}
   m_UseDelaunayMesh: 1
@@ -12288,7 +12288,7 @@ Tilemap:
     m_Data: {fileID: -1338824420, guid: 1caf7e23015361b438227e49ec12cebd, type: 3}
   m_TileMatrixArray:
   - serializedVersion: 2
-    m_RefCount: 2224
+    m_RefCount: 1122
     m_Data:
       e00: 1
       e01: 0
@@ -12452,7 +12452,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: cc1c12b0e4e0bd9429a10091526a2463, type: 2}
 --- !u!4 &1199278137
 Transform:
   m_ObjectHideFlags: 0
@@ -13178,8 +13178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeSpawner
   slimePrefab: {fileID: 8495069179099899762, guid: ffdd5262836424f418a9b1651a51c74d, type: 3}
-  spawnInterval: 3
-  maxSlimes: 10
+  spawnInterval: 1
+  maxSlimes: 20
   spawnPadding: 2
 --- !u!4 &1666251381
 Transform:
