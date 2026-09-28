@@ -193,9 +193,11 @@ MonoBehaviour:
   maxHealth: 30
   deathAnimationLength: 0.6
   attackDamage: 10
-  attackRange: 1.4
+  attackRange: 1.1
   attackCooldown: 2
   repathInterval: 0.2
+  hitFlashColor: {r: 0.8584906, g: 0.11743506, b: 0.11743506, a: 1}
+  flashDuration: 0.12
 --- !u!95 &1739765023944966544
 Animator:
   serializedVersion: 7
@@ -228,11 +230,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.10000002
-  m_Speed: 1
+  m_Speed: 2.5
   m_Acceleration: 6.5
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1.5
+  m_StoppingDistance: 1.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

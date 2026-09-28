@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (isAttacking || Time.timeScale == 0f) return;
         bool spacePressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
         bool leftClickPressed = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
 

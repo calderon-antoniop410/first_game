@@ -5,8 +5,8 @@ public class SwordHitbox : MonoBehaviour
 {
     [SerializeField] private int damageAmount = 10;
 
-    // Track targets hit during this specific swing
-    private HashSet<Collider2D> hitEnemies = new HashSet<Collider2D>();
+    // Track enemies hit during this specific swing
+    private HashSet<SlimeEnemy> hitEnemies = new HashSet<SlimeEnemy>();
 
     private void OnEnable()
     {
@@ -16,14 +16,11 @@ public class SwordHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy") && !hitEnemies.Contains(other))
+        SlimeEnemy slime = other.GetComponentInParent<SlimeEnemy>();
+        if (slime != null && !hitEnemies.Contains(slime))
         {
-            SlimeEnemy slime = other.GetComponent<SlimeEnemy>();
-            if (slime != null)
-            {
-                slime.TakeDamage(damageAmount);
-                hitEnemies.Add(other);
-            }
+            slime.TakeDamage(damageAmount);
+            hitEnemies.Add(slime);
         }
     }
 }

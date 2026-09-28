@@ -1,11 +1,18 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
+    private bool isDead = false;
+
+    [Header("Death & Scene Transition")]
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
+    [SerializeField] private float returnToMenuDelay = 5f;
 
     [Header("UI Reference")]
     [SerializeField] private Slider healthSlider;
@@ -14,7 +21,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        // Grab the Animator attached to this GameObject
         animator = GetComponent<Animator>();
     }
 
@@ -31,20 +37,21 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         UpdateUI();
 
-        // Trigger the 4-frame Hurt animation in the Animator
-        if (animator != null)
-        {
-            animator.SetTrigger("Hurt");
-        }
-
+        // Check fatal damage first so "Hurt" doesn't cancel the death sequence
         if (currentHealth <= 0)
         {
             Die();
+        }
+        else if (animator != null)
+        {
+            animator.SetTrigger("Hurt");
         }
     }
 
@@ -58,7 +65,39 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player Defeated!");
-        gameObject.SetActive(false);
+        if (isDead) return;
+        isDead = true;
+
+        // Force transition directly into the death animation state
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.Play("Player_Death");
+        }
+
+        // Disable control and physics while keeping the GameObject active for the coroutine
+        PlayerMovement movement = GetComponent<PlayerMovement>();
+        if (movement != null) movement.enabled = false;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        StartCoroutine(ReturnToMainMenuRoutine());
+    }
+
+    // Waits in real time so timeScale pauses don't freeze the scene transition
+    private IEnumerator ReturnToMainMenuRoutine()
+    {
+        yield return new WaitForSecondsRealtime(returnToMenuDelay);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

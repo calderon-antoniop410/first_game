@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,11 +10,18 @@ public class SlimeEnemy : MonoBehaviour
 
     [Header("Attack Settings")]
     [SerializeField] private float deathAnimationLength = 0.6f;
+
+    private bool wasInRange;
     private bool isDead = false;
     [SerializeField] private int attackDamage;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown;
     [SerializeField] private float repathInterval = 0.2f;
+
+    [Header("Visual Feedback")]
+    [SerializeField] private Color hitFlashColor = new Color(1f, 0.3f, 0.3f, 1f);
+    [SerializeField] private float flashDuration = 0.12f;
+    private Color baseColor;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -30,6 +38,11 @@ public class SlimeEnemy : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        if (spriteRenderer != null)
+        {
+            baseColor = spriteRenderer.color;
+        }
+
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
@@ -42,7 +55,6 @@ public class SlimeEnemy : MonoBehaviour
 
     private void Update()
     {
-    
         if (playerTransform == null || isDead) return;
 
         float distance = Vector2.Distance(transform.position, playerTransform.position);
@@ -50,6 +62,12 @@ public class SlimeEnemy : MonoBehaviour
         if (distance <= attackRange)
         {
             agent.isStopped = true;
+
+            if (!wasInRange)
+            {
+                wasInRange = true;
+                nextAttackTime = Time.time + attackCooldown;
+            }
 
             if (Time.time >= nextAttackTime)
             {
@@ -59,6 +77,7 @@ public class SlimeEnemy : MonoBehaviour
         }
         else
         {
+            wasInRange = false;
             agent.isStopped = false;
 
             if (Time.time >= nextRepathTime)
@@ -95,11 +114,19 @@ public class SlimeEnemy : MonoBehaviour
             playerHealth.TakeDamage(attackDamage);
         }
     }
+
     public void TakeDamage(int damage)
     {
         if (isDead) return;
         currentHealth -= damage;
-  
+
+        nextAttackTime = Time.time + attackCooldown; // Reset attack cooldown when taking damage
+        if (spriteRenderer != null && gameObject.activeInHierarchy)
+        {
+            StopAllCoroutines();
+            StartCoroutine(HitFlashRoutine());
+        }
+
         if (currentHealth <= 0)
         {
             Die();
@@ -109,6 +136,14 @@ public class SlimeEnemy : MonoBehaviour
             animator.SetTrigger("Hurt");
         }
     }
+
+    private IEnumerator HitFlashRoutine()
+    {
+        spriteRenderer.color = hitFlashColor;
+        yield return new WaitForSeconds(flashDuration);
+        spriteRenderer.color = baseColor;
+    }
+
     public void SetSpawner(SlimeSpawner spawnerRef)
     {
         spawner = spawnerRef;
