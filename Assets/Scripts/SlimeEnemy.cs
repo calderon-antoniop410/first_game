@@ -99,10 +99,14 @@ public class SlimeEnemy : MonoBehaviour
     {
         if (isDead) return;
         currentHealth -= damage;
-
+  
         if (currentHealth <= 0)
         {
             Die();
+        }
+        else if (animator != null)
+        {
+            animator.SetTrigger("Hurt");
         }
     }
     public void SetSpawner(SlimeSpawner spawnerRef)
@@ -124,6 +128,11 @@ public class SlimeEnemy : MonoBehaviour
         if (spawner != null)
         {
             spawner.OnSlimeDied();
+        }
+
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddKill();
         }
 
         Destroy(gameObject, deathAnimationLength);
