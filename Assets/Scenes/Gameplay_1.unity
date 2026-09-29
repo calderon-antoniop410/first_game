@@ -780,7 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f4206646976df4e97573c223e2f4da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 50
+  maxHealth: 50000
   mainMenuSceneName: MainMenu
   returnToMenuDelay: 5
   healthSlider: {fileID: 2072514009}
