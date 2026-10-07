@@ -31,9 +31,8 @@ public class SlimeEnemy : MonoBehaviour
     private float nextAttackTime = 0f;
     private float nextRepathTime = 0f;
 
-    private void Start()
+    private void Awake()
     {
-        currentHealth = maxHealth;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -43,9 +42,6 @@ public class SlimeEnemy : MonoBehaviour
             baseColor = spriteRenderer.color;
         }
 
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
-
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
         {
@@ -53,9 +49,45 @@ public class SlimeEnemy : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        currentHealth = maxHealth;
+        wasInRange = false;
+        isDead = false;
+        nextAttackTime = 0f;
+        nextRepathTime = 0f;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = baseColor;
+            spriteRenderer.flipX = false;
+        }
+
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.ResetTrigger("Attack");
+            animator.ResetTrigger("Death");
+            animator.ResetTrigger("Hurt");
+            animator.SetFloat("Speed", 0f);
+        }
+
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+            agent.isStopped = false;
+            if (agent.isOnNavMesh)
+            {
+                agent.ResetPath();
+            }
+        }
+    }
+
     private void Update()
     {
-        if (playerTransform == null || isDead) return;
+        if (playerTransform == null || isDead || agent == null || !agent.enabled) return;
 
         float distance = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -160,16 +192,25 @@ public class SlimeEnemy : MonoBehaviour
             animator.SetTrigger("Death");
         }
 
-        if (spawner != null)
-        {
-            spawner.OnSlimeDied();
-        }
-
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.AddKill();
         }
 
-        Destroy(gameObject, deathAnimationLength);
+        StartCoroutine(ReturnToPoolAfterDeath());
+    }
+
+    private IEnumerator ReturnToPoolAfterDeath()
+    {
+        yield return new WaitForSeconds(deathAnimationLength);
+
+        if (spawner != null)
+        {
+            spawner.ReturnSlime(this);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

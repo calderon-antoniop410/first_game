@@ -13,7 +13,7 @@ A 2D game where the player fights slimes, earns kills, and tries to beat the sav
 - `PlayerMovement.cs` - Reads player movement and attack input, moves the player, and activates the sword hitbox.
 - `ScoreManager.cs` - Tracks kills and saves the best score with PlayerPrefs.
 - `SlimeEnemy.cs` - Moves slimes toward the player, attacks, takes damage, and dies.
-- `SlimeSpawner.cs` - Spawns slimes just outside the camera view and limits how many are alive.
+- `SlimeSpawner.cs` - Pre-creates a pool of slimes, reuses inactive ones outside the camera view, and limits how many are active.
 - `SwordHitbox.cs` - Damages each slime once per sword swing using a trigger.
 
 ## Scenes and key GameObjects
@@ -26,7 +26,7 @@ A 2D game where the player fights slimes, earns kills, and tries to beat the sav
 1. **Scenes and scene management** - MainMenu's Play button loads `Gameplay_1`; the pause menu and player-death flow can return to MainMenu.
 2. **Input System player control** - The Player has a `PlayerInput` using an Input Actions asset with Move and Attack actions; `PlayerMovement` receives movement input and handles attacks.
 3. **Tilemap level layout** - The Gameplay scene has Ground and Top Tilemaps with Tilemap Collider 2D components; Top has a non-trigger collider for collision.
-4. **Prefab pooling** - **Not currently satisfied:** `SlimeSpawner` uses `Instantiate`, and `SlimeEnemy` uses `Destroy`; enemies are not pooled or reused.
+4. **Prefab pooling** - `SlimeSpawner` pre-creates up to `maxSlimes` from the slime prefab and reuses inactive instances; defeated slimes are returned to the pool after their death animation.
 5. **Tags, Layers, and triggers** - The Player is tagged `Player`; the sword hitbox uses `OnTriggerEnter2D` to damage slimes.
 6. **Pause menu** - The Gameplay Canvas pause menu sets `Time.timeScale` to pause and resume, with buttons to return to MainMenu or quit.
 7. **PlayerPrefs persistence** - `ScoreManager` saves the best kill count to PlayerPrefs, and the main menu displays it after relaunch.
@@ -36,4 +36,4 @@ A 2D game where the player fights slimes, earns kills, and tries to beat the sav
 
 - The project uses Unity packages including Input System, Universal Render Pipeline (2D lighting), Tilemap, and TextMesh Pro. It also includes NavMeshPlus from `https://github.com/h8man/NavMeshPlus.git` for 2D slime navigation.
 - Imported sprite, tile, and audio files are in `Assets/Sprites`, `Assets/Tilemaps`, and `Assets/Audio`. Free assets obtained online.
-- Tutorials on how navmesh works and used AI for documentation and in creating the settings / controls button.
+- Tutorials on how navmesh and other features works and used AI for documentation and assisting in development.

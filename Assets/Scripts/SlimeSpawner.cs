@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SlimeSpawner : MonoBehaviour
@@ -14,10 +15,33 @@ public class SlimeSpawner : MonoBehaviour
 
     private Camera mainCamera;
     private int currentSlimeCount = 0;
+    private readonly List<SlimeEnemy> slimePool = new List<SlimeEnemy>();
 
     private void Start()
     {
         mainCamera = Camera.main;
+        if (slimePrefab == null)
+        {
+            Debug.LogError("SlimeSpawner requires a slime prefab.", this);
+            return;
+        }
+
+        for (int i = 0; i < maxSlimes; i++)
+        {
+            GameObject slimeObject = Instantiate(slimePrefab, transform.position, Quaternion.identity, transform);
+            SlimeEnemy slime = slimeObject.GetComponent<SlimeEnemy>();
+            if (slime == null)
+            {
+                Debug.LogError("The slime prefab requires a SlimeEnemy component.", slimeObject);
+                Destroy(slimeObject);
+                return;
+            }
+
+            slime.SetSpawner(this);
+            slimeObject.SetActive(false);
+            slimePool.Add(slime);
+        }
+
         StartCoroutine(SpawnSlimesRoutine());
     }
 
@@ -72,20 +96,24 @@ public class SlimeSpawner : MonoBehaviour
 
         spawnPosition.z = 0f; // Ensure standard 2D depth
 
-        // 3. Instantiate the slime at the calculated off-screen position
-        GameObject newSlime = Instantiate(slimePrefab, spawnPosition, Quaternion.identity);
-
-        SlimeEnemy slimeEnemy = newSlime.GetComponent<SlimeEnemy>();
-        if (slimeEnemy != null)
+        SlimeEnemy slime = slimePool.Find(pooledSlime => !pooledSlime.gameObject.activeSelf);
+        if (slime != null)
         {
-            slimeEnemy.SetSpawner(this);
+            slime.transform.position = spawnPosition;
+            slime.transform.rotation = Quaternion.identity;
+            slime.gameObject.SetActive(true);
+            currentSlimeCount++;
         }
-        
-        currentSlimeCount++;
     }
 
-    public void OnSlimeDied()
+    public void ReturnSlime(SlimeEnemy slime)
     {
+        if (slime == null || !slime.gameObject.activeSelf)
+        {
+            return;
+        }
+
+        slime.gameObject.SetActive(false);
         currentSlimeCount = Mathf.Max(0, currentSlimeCount - 1);
     }
 }
