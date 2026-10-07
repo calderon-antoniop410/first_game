@@ -35,5 +35,5 @@ A 2D game where the player fights slimes, earns kills, and tries to beat the sav
 ## Third-party assets, packages, and tutorials
 
 - The project uses Unity packages including Input System, Universal Render Pipeline (2D lighting), Tilemap, and TextMesh Pro. It also includes NavMeshPlus from `https://github.com/h8man/NavMeshPlus.git` for 2D slime navigation.
-- Imported sprite, tile, and audio files are in `Assets/Sprites`, `Assets/Tilemaps`, and `Assets/Audio`. Their original authors and sources are not identified in the project files; add attribution here if required by their licenses.
-- No tutorials are identified in the project files. A comment in `MainMenu.cs` notes AI assistance for creating the controls page.
+- Imported sprite, tile, and audio files are in `Assets/Sprites`, `Assets/Tilemaps`, and `Assets/Audio`. Free assets obtained online.
+- Tutorials on how navmesh works and used AI for documentation and in creating the settings / controls button.
