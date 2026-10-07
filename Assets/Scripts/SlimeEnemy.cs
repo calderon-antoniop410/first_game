@@ -133,7 +133,7 @@ public class SlimeEnemy : MonoBehaviour
         }
         else if (animator != null)
         {
-            animator.SetTrigger("Hurt");
+             animator.SetTrigger("Hurt");
         }
     }
 
