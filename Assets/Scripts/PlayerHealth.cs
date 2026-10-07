@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Death & Scene Transition")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
-    [SerializeField] private float returnToMenuDelay = 5f;
+    [SerializeField] private float returnToMenuDelay = 3f;
 
     [Header("UI Reference")]
     [SerializeField] private Slider healthSlider;

@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = true;
         audioSource = GetComponent<AudioSource>();
 
         Canvas canvas = FindAnyObjectByType<Canvas>();

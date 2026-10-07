@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     private void Awake()
     {
         Debug.Log("PauseMenu Awake called");
+        Cursor.visible = false;
         audioSource = GetComponent<AudioSource>();
         Time.timeScale = 1f;
         pausePanel.SetActive(false);
@@ -38,6 +39,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         isPaused = true;
+        Cursor.visible = true;
         pausePanel.SetActive(true);
         Time.timeScale = 0f;
     }
@@ -47,6 +49,7 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         pausePanel.SetActive(false);
         Time.timeScale = 1f;
+        Cursor.visible = false;
         PlayClick();
     }
 
@@ -55,6 +58,7 @@ public class PauseMenu : MonoBehaviour
         StartCoroutine(ClickThen(() =>
         {
             Time.timeScale = 1f;
+            Cursor.visible = true;
             SceneManager.LoadScene(mainMenuSceneName);
         }));
     }
